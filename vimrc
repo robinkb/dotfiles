@@ -3,9 +3,16 @@
 
 " General, portable settings
 function! Main()
+
     " Load plugs at the beginning to avoid overwriting my settings
     " $__hostname is set by bashrc to the home machine
     if $__hostname == $HOSTNAME
+        if empty(glob('~/.vim/autoload/plug.vim'))
+            silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+            autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+        endif
+
         call Plugs()
     endif
 
@@ -201,6 +208,7 @@ function! OpenTerminal()
     call term_start( "bash", {"term_finish":"close","term_rows":"12"} )
     setlocal wfh
     setlocal nobuflisted
+    setlocal nonumber
     set nosplitbelow
 endfunction
 
